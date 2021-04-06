@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <style>
+
+        body {font-family: Arial;}
+
+        /* Style the tab */
+        .tab {
+          overflow: hidden;
+          border: 1px solid #ccc;
+          background-color: #f1f1f1;
+        }
+
+
+        /* Style the buttons inside the tab */
+        .tab button {
+          background-color: inherit;
+          float: left;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          padding: 14px 16px;
+          transition: 0.3s;
+          font-size: 17px;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+          background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+          background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+          display: none;
+          padding: 6px 12px;  
+          border-top: none;
+          animation: fadeEffect 1s; /* Fading effect takes 1 second */
+        }
+
+        /* Go from zero to full opacity */
+        @keyframes fadeEffect {
+          from {opacity: 0;}
+          to {opacity: 1;}
+        }
+
+        .filterDiv {
+        
+          background-color: #2196F3;
+          color: #ffffff;
+          position: relative;
+          margin: 5px;
+          padding: 20px;
+          flex-wrap: wrap;
+          display: none;
+        }
+
+        .filterInformation {
+       
+          background-color: #2196F3;
+          color: #ffffff;
+          margin: 5px;
+          padding: 20px;
+          flex-wrap: wrap;
+          display: block;
+        }
+
+        .show {
+          display: block;
+        }
+
+        .container {
+          margin-top: 20px;
+          overflow: hidden;
+        }
+
+        input{
+            width: 550px;
+        }
+
+        .companyLogoSize {
+            width: 100px;
+            height: 100px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+      /*
+        form {
+          height: 10em;
+          position: relative 
+        }
+
+        form {
+          margin: 0;
+          position: absolute;
+          top: 20%;
+          left: 50%;
+          margin-right: -50%;
+          transform: translate(-50%, -50%) 
+        }
+      */
+        .formJob {
+          height: 10em;
+          position: relative 
+        }
+
+        .formJob{
+          margin: 0;
+          position: absolute;
+          top: 20%;
+          left: 50%;
+          margin-right: -50%;
+          transform: translate(-50%, -50%) 
+        }
+
+        .fuckNi{
+          position: relative;
+          margin: auto;
+        }
+        
+        legend{
+          font-weight: bold;
+        }
+
+        .displaydel{
+          position: relative;
+          margin-top: -25px;
+        }
+    
+        .button_job{
+          float: right;
+        }
+
+        .gone{
+          display: none;
+        }
+
+      </style>
+
+  </head>
+
+  <body>
+
+    <div class="tab">
+      <button class="tablinks" onclick="openCity(event, 'Company')" id="defaultOpen">Company</button>
+      <button class="tablinks" onclick="openCity(event, 'Job')">Job</button>
+      <button class="tablinks" onclick="openCity(event, 'Information')">Information</button>
+      <button class="tablinks" onclick="openCity(event, 'Banner')">Banner</button>
+      <button class="tablinks" onclick="openCity(event, 'Delete')">Delete Company and job</button>
+      <button class="tablinks" onclick="openCity(event, 'DeleteInformation')">Delete Information</button>  
+      <button class="tablinks" onclick="openCity(event, 'DeleteBanner')">Delete Banner</button>
+      <!-- <button class="tablinks" onclick="openCity(event, 'ValidateCaptcha')">Verify IKA UNY</button> -->
+      <button class="tablinks" onclick="openCity(event, 'EditCompany')">Edit Company</button>
+      <button class="tablinks" onclick="openCity(event, 'EditJob')">Edit Jobs</button>
+      <button class="tablinks" onclick="openCity(event, 'About')">About</button>
+      <button class="tablinks" onclick="openCity(event, 'Refresh')">Refresh</button>
+      <button class="tablinks" onclick="openCity(event, 'panggilanTes')">Panggilan Tes</button>
+    </div>
+
+
+   
+    
+    <!-- Tab content -->
+    <div id="Company" class="tabcontent">    
+      <form action="/insert_Company" method="post" class="formJob">
+        <fieldset>
+          <legend>Insert company's data</legend>
+            Name :<br>
+            <input type="text" name="companyName" >
+            <br>
+            <br>
+            Address :<br>
+            <input type="text" name="companyAddress"> 
+            <br>
+            <br>
+            Description :<br>
+            <input type="url" name="companyDescription">
+            <br>
+            <br>
+            Email :<br>
+            <input type="email" name="companyEmail">
+            <br>
+            <br>
+            companyLogo :<br>
+            <input type="text" name="companyLogo"> 
+            <br>
+            <br>
+            companyWebsite :<br>
+            <input type="text" name="companyWebsite">
+            <br>
+            <br>
+            <input type="submit" value="Submit">   
+        </fieldset>
+      </form>
+    <h1>{{status.status}}</h1>
+    <h2>{{db_result.companyName}}</h2>
+  </div>
+
+  <div id="Job" class="tabcontent">
+    <form action="/insert_Job" method="post" class="formJob">
+      <fieldset>
+        <legend>Insert job data</legend>
+            Company Name : <br>
+            <select id="companyName" name="companyName">
+              {{#each data.arr}}
+                <option value='{"companyID":"{{companyID}}","companyName":"{{companyName}}","companyEmail":"{{companyEmail}}"}'> {{companyName}}</option>
+              {{/each}}
+            </select> 
+            <br>
+            <br>
+            Job Name : <br>
+            <input type="text" name="jobName" >
+            <br>
+            <br>
+            Detail :<br>
+            <input type="url" name="detail"> 
+            <br>
+            <br>
+            Quick Apply :<br>
+            <select id="quickApply" name="quickApply">
+                <option value='false'>false</option>
+                <option value='true'>true</option>
+            </select> 
+            <br>
+            <br>
+            Start Date :<br>
+            <input type="datetime-local" name="startDate">
+            <br>
+            <br>
+            End Date :<br>
+            <input type="datetime-local" name="endDate">
+            <br>
+            <br>
+            <input type="submit" value="Submit">   
+      </fieldset>
+    </form>
+    <h1>{{status.status}}</h1>
+  </div>
+
+   <div id="Information" class="tabcontent">
+     <form action="/insert_information" method="POST" class="formJob">
+       <fieldset>
+        <legend>Insert information</legend>
+            Name :<br>
+            <input type="text" name="informationName" >
+            <br>
+            <br>
+            Detail :<br>
+            <input type="url" name="informationDetail"> 
+            <br>
+            <br>
+            Category :<br>
+            <select name="informationCategory">
+              <option value="Berita">Berita</option>
+              <option value="Job Seeker">Job Seeker</option>
+              <option value="Tips Karir">Tips Karir</option>
+              <option value="Panggilan Test">Panggilan Test</option>
+            </select>
+            <br>
+            <br>
+            by :<br>
+            <input type="text" name="informationBy"> 
+            <br>
+            <br>
+            <input type="submit" value="Submit">   
+        </fieldset>
+      </form>
+    </div>
+
+    <div id="Banner" class="tabcontent">
+      <form action="/insert_banner" method="POST" class="formJob">
+      <fieldset>
+        <legend>Insert Banner</legend>
+            Name : <br>
+            <input type="text" name="Nama">
+            <br>
+            <br>
+            Link :<br>
+            <input type="text" name="link">
+            <br>
+            <br>
+            <input type="submit" value="submit">
+      </fieldset>
+      </form>
+    </div>
+
+    <div  id="Delete" class="tabcontent">
+  
+        <fieldset class="formJob">
+          <legend>Delete company and job</legend>
+                COMPANY : 
+                <br> 
+                <form action="/delete_company" method="post" >  
+                  <select id="deleteCompany" name="deleteCompany" onchange="filterSelection(changeFunc())">
+                    {{#each data.arr}}    
+                      <option value='{"companyID":"{{companyID}}","companyName":"{{companyName}}","companyEmail":"{{companyEmail}}"}'> {{companyName}}</option>
+                    {{/each}}
+                  </select>
+            
+                <input type="submit" value="Delete">
+                </form>  
+                <br> 
+                <br>
+                JOB :
+                <form action="/delete_job" method="post" class="fuckNi" >
+                  {{#each data.arrJobs}}
+                      <div class="filterDiv {{companyID}}" > {{jobName}} <button id="button_job" name="button_job" class="button_job" type="submit" value='{"companyID":"{{companyID}}","jobID":"{{jobID}}"}'>Delete</button> </div>    
+                  {{/each}}
+              </form>
+
+                <br> 
+                <br>
+        </fieldset>
+      
+    </div>
+
+    <div id="DeleteInformation" class="tabcontent">
+      <form action="/delete_information" method="POST" class="formJob">
+        <fieldset>
+          <legend>Delete information</legend>
+            {{#each data.arrInformation}}
+              <div class="filterInformation"> {{informasi_name}} <button name="deleteInformasi" class="button_job" type="submit" value={{informasiID}}>Delete</button> </div>    
+            {{/each}}   
+        </fieldset>
+      </form>
+    </div>
+
+    <div id="DeleteBanner" class="tabcontent">
+      <form action="/delete_banner" method="POST" class="formJob">
+        <fieldset>
+          <legend>Banner</legend>
+            {{#each data.arrBanner}}
+                  <div class="filterInformation"> {{Nama}} <button name="deleteBanner" class="button_job" type="submit" value={{id}}>Delete</button> </div> 
+            {{/each}}
+        </fieldset>
+      </form>
+    </div>
+
+<!--
+ <div id="ValidateCaptcha" class="tabcontent">
+      <fieldset>
+        <legend>Registrasi IKA</legend>
+        <form action="/validate" method="POST">
+          {{#each data.arrIKAReg}}
+                <div class="filterInformation"> {{nama_lengkap}} ({{nim}})<button name="validate" type="submit" value='{"nama_lengkap":"{{nama_lengkap}}","nim":"{{nim}}", "fileName":"{{fileName}}", "phoneNumber":"{{phoneNumber}}"}'>Verify</button> </div>    
+          {{/each}} 
+        </form>
+      </fieldset>
+    </div>
+  -->
+
+ <div  id="EditCompany" class="tabcontent">   
+    <form action="/edit_company" method="post" class="formJob">
+      <fieldset>
+        <legend>Edit Company</legend>
+    
+            <p> COMPANY :</p>
+            <select id="editCompany" name="editCompany" onchange="changeFuncEdit()">
+              {{#each data.arr}}    
+                <option value='{"companyID":"{{companyID}}","companyLogo":"{{companyLogo}}","companyName":"{{companyName}}","companyAddress":"{{companyAddress}}","companyWebsite":"{{companyWebsite}}","companyEmail":"{{companyEmail}}"}'> {{companyName}}</option>            
+              {{/each}}
+            </select>
+       
+            <select class="gone" id="jobData" name="jobData" onchange="changeFuncEdit()">
+              {{#each data.arrJobs}}
+                <option value='{"companyID":"{{companyID}}","jobID":"{{jobID}}","jobName":"{{jobName}}","detail":"{{detail}}","quickApply":"{{quickApply}}","startDate":"{{startDate}}","endDate":"{{endDate}}"}'> {{jobName}}</option>                
+              {{/each}}
+            </select>
+
+            <p>Company Logo : </p>
+            <img id="comp_logo" class="companyLogoSize">
+            <br>  
+            <input type="text" id="comp_logo_input" name="comp_logo_input" class="inputText">    
+            <br>
+            <br>  
+            <p>Company Name : </p>
+            <input type="text" id="comp_name" name="comp_name" class="inputText">
+            <br>    
+            <p>Company Address : </p>
+            <input type="text" id="comp_address" name="comp_address" class="inputText">
+            <br>    
+            <p>Company Website : </p>
+            <input type="text" id="comp_website" name="comp_website" class="inputText">
+            <br>    
+            <p>Company Email : </p>
+            <input type="text" id="comp_email" name="comp_email" class="inputText">
+            <br>
+            <br>
+            <input type="submit" value="Edit">
+  
+      </fieldset>
+    </form>
+  </div>
+
+   <div  id="EditJob" class="tabcontent">   
+    <form action="/edit_job" method="post" class="formJob">
+      <fieldset>
+        <legend>Edit Job</legend>
+    
+            <p> COMPANY :</p>
+            <select id="editCompanyJob" name="editCompanyJob" onchange="filterSelectionEditJobCompany(changeFuncEditJobcompany())">
+               {{#each data.arr}}    
+                    <option value='{"companyID":"{{companyID}}","companyName":"{{companyName}}","companyEmail":"{{companyEmail}}"}'> {{companyName}}</option>
+                {{/each}}
+            </select>
+
+            <p> JOB :</p>
+            <select class="gone" id="editCompaniesJob" name="editCompaniesJob" onchange="changeFuncEditJob()">
+              {{#each data.arrJobs}}    
+                <option value='{"companyID":"{{companyID}}","jobID":"{{jobID}}","jobName":"{{jobName}}","detail":"{{detail}}","quickApply":"{{quickApply}}","startDate":"{{startDate}}","endDate":"{{endDate}}"}'> {{jobName}}</option>            
+              {{/each}}
+            </select>
+
+              <select id="penis" name="penis" onclick="changeFuncEditJob()" onchange="changeFuncEditJob()">
+        
+    
+            </select>
+       
+            <p>Job Name : </p>
+            <input type="text" id="job_name" name="job_name" class="inputText">
+            <br>    
+            <p>Job Detail </p>
+            <input type="text" id="job_detail" name="job_detail" class="inputText">
+            <br>    
+            <p>quickApply </p>
+            <select id="job_quickApply" name="job_quickApply">
+                <option value='false'>false</option>
+                <option value='true'>true</option>
+            </select> 
+            <br>   
+            <br>  
+            Start Date :<br>
+            <input type="datetime-local" id="job_startDate" name="job_startDate">
+            <br>
+            <br>
+            End Date :<br>
+            <input type="datetime-local" id="job_endDate" name="job_endDate">
+            <br>
+            <br>
+         
+            <input type="submit" value="Edit">
+  
+      </fieldset>
+    </form>
+  </div>
+
+   <div  id="About" class="tabcontent">   
+    <form action="insert_about" method="POST" class="formJob">
+       <fieldset>
+        <legend>About</legend>
+       
+        
+         Google Map : <br><br>
+          Address :
+          <br>
+            <input type="text" name="address" class="inputText" value="{{data.arrAbout.address}}">
+            <br>
+            <br>
+
+          Latitude :
+          <br>
+            <input type="text" name="latitude" class="inputText" value="{{data.arrAbout.latitude}}">
+            <br>
+            <br>
+          Longitude :
+          <br>
+            <input type="text" name="longitude" class="inputText" value="{{data.arrAbout.longitude}}">
+            <br>
+            <br>
+          
+           Location :
+           <br>
+            <input type="text" name="location"  class="inputText" value="{{data.arrAbout.location}}">
+            <br>
+            <br>
+        
+        Phone : <br><br>
+          Phonenumber #1 :
+          <br>
+            <input type="text" name="phonenumber_one" class="inputText" value="{{data.arrAbout.phonenumber_one}}">
+            <br>
+            <br>
+           Phonenumber #2 :
+           <br>
+            <input type="text" name="phonenumber_two" class="inputText" value="{{data.arrAbout.phonenumber_two}}">
+            <br>
+            <br>
+
+        Email : <br><br>
+          email :
+          <br>
+            <input type="text" name="email" class="inputText" value="{{data.arrAbout.email}}">
+            <br>
+            <br>
+
+        Instagram :<br><br>
+          username :
+          <br>
+            <input type="text" name="inst_username" class="inputText" value="{{data.arrAbout.inst_username}}">
+            <br>
+            <br>
+        
+        Facebook :<br><br>
+          username :
+          <br> 
+            <input type="text" name="facebook_username" class="inputText" value="{{data.arrAbout.facebook_username}}">
+            <br>
+            <br>
+          page kode :
+          <br> 
+            <input type="text" name="facebook_page_kode" class="inputText" value="{{data.arrAbout.facebook_page_kode}}">
+            <br>
+            <br>
+        
+        Twitter :<br><br>
+          username : 
+          <br>
+            <input type="text" name="twitter_username" class="inputText" value="{{data.arrAbout.twitter_username}}">
+            <br>
+            <br>
+
+         website :<br><br>
+          url : 
+          <br>
+            <input type="text" name="website_url" class="inputText" value="{{data.arrAbout.website_url}}">
+            <br>
+            <br>
+
+        Faksimile :<br><br>
+          fax number : 
+          <br>
+            <input type="text" name="fax_number" class="inputText" value="{{data.arrAbout.fax_number}}">
+            <br>
+            <br>
+        
+            <input type="submit" value="Submit">   
+      </fieldset>
+    </form>
+  </div>
+
+
+  <div  id="Refresh" class="tabcontent">   
+    <form action="action_refresh" method="POST" class="formJob">
+      <button id="bt_refresh" name="bt_refresh" type="submit">Refresh</button>
+    </form>
+  </div>
+
+  </body>
+
+<div id="panggilanTes" class="tabcontent">    
+      <form action="/insert_panggilanTes" method="post" class="formJob">
+        <fieldset>
+          <legend>Insert Panggilan Tes</legend>
+
+          <p> COMPANY :</p>
+            <select id="editCompanyJobpanggilanTes" name="editCompanyJobpanggilanTes" onchange="filterSelectionEditJobCompanypanggilanTes(changeFuncEditJobcompanypanggilanTes())">
+               {{#each data.arr}}    
+                    <option value='{"companyID":"{{companyID}}","companyName":"{{companyName}}","companyEmail":"{{companyEmail}}"}'> {{companyName}}</option>
+                {{/each}}
+            </select>
+
+            <p> JOB :</p>
+            <select class="gone" id="editCompaniesJobpanggilanTes" name="editCompaniesJobpanggilanTes" onchange="changeFuncEditJobpanggilanTes()">
+              {{#each data.arrJobs}}    
+                <option value='{"companyID":"{{companyID}}","jobID":"{{jobID}}","jobName":"{{jobName}}","detail":"{{detail}}","quickApply":"{{quickApply}}","startDate":"{{startDate}}","endDate":"{{endDate}}"}'> {{jobName}}</option>            
+              {{/each}}
+            </select>
+
+              <select id="penispanggilanTes" name="penispanggilanTes" onclick="changeFuncEditJobpanggilanTes()" onchange="changeFuncEditJobpanggilanTes()">
+                
+            </select>
+        
+            <br>
+            <br>
+            link :<br>
+            <input type="text" name="link" >
+            <br>
+            <br>
+            
+            <input type="submit" value="Submit">   
+        </fieldset>
+      </form>
+  </div>
+
+
+  <script type="text/javascript" >
+
+      function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+
+        tabcontent = document.getElementsByClassName("tabcontent");
+          for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+          }
+
+          tablinks = document.getElementsByClassName("tablinks");
+          for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+          }
+
+          document.getElementById(cityName).style.display = "block";
+          evt.currentTarget.className += " active";
+        }
+
+      document.getElementById("defaultOpen").click();
+      //hideOptions();
+
+    function deleteF(evt, category) {
+      var i, tabcontent, deletelinks;
+      
+      tabcontent = document.getElementsByClassName("displaydel");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+      deletelinks = document.getElementsByClassName("deletelinks");
+        for (i = 0; i < deletelinks.length; i++) {
+            deletelinks[i].className = deletelinks[i].className.replace(" active", "");
+        }
+
+        document.getElementById(category).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+      
+    function changeFunc() {
+      var selectBox = document.getElementById("deleteCompany");
+      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+      var obj = JSON.parse(selectedValue).companyID;
+      console.log('obj', obj);
+      return obj;
+    }
+
+    function changeFuncEditJobcompany() {
+      var selectBox = document.getElementById("editCompanyJob");
+      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+      var obj = JSON.parse(selectedValue).companyID;
+      console.log('obj', obj);
+      return obj;
+    }
+
+    function changeFuncEditJobcompanypanggilanTes() {
+      var selectBox = document.getElementById("editCompanyJobpanggilanTes");
+      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+      var obj = JSON.parse(selectedValue).companyID;
+      console.log('obj', obj);
+      return obj;
+    }
+
+    function changeFuncEdit() {
+      var selectBox = document.getElementById("editCompany");
+      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+      var obj = JSON.parse(selectedValue);
+
+      document.getElementById("comp_logo").src=obj.companyLogo;
+      document.getElementById("comp_logo_input").value=obj.companyLogo;
+      document.getElementById("comp_name").value=obj.companyName;
+      document.getElementById("comp_address").value=obj.companyAddress;
+      document.getElementById("comp_website").value=obj.companyWebsite;
+      document.getElementById("comp_email").value=obj.companyEmail;
+      console.log('obj', obj.companyName);
+    }
+ 
+    function changeFuncEditJob(){
+      var selectBox = document.getElementById("penis");
+      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+      var obj = JSON.parse(selectedValue);
+
+      document.getElementById("job_name").value=obj.jobName;
+      document.getElementById("job_detail").value=obj.detail;
+      document.getElementById("job_quickApply").value=obj.quickApply;
+      document.getElementById("job_startDate").value=obj.startDate;
+      document.getElementById("job_endDate").value=obj.endDate;
+     
+    }
+
+    function changeFuncEditJobpanggilanTes(){
+      var selectBox = document.getElementById("penispanggilanTes");
+      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+      var obj = JSON.parse(selectedValue);
+
+     // document.getElementById("link").value=obj.jobName;
+     
+    }
+      
+    function companyID(text){
+      document.getElementById("textH1").innerHTML = text;
+    }
+
+    function hideOptions(){
+      document.getElementById("job").style.display = "none";   
+    }
+        
+    function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    changeFuncEdit();
+    filterSelection(changeFunc());
+    filterSelectionEditJobCompany(changeFuncEditJobcompany());
+
+    function filterSelection(c) {
+      var x, i;
+      x = document.getElementsByClassName("filterDiv");
+      if (c == "all") c = "";
+      for (i = 0; i < x.length; i++) {
+        w3RemoveClass(x[i], "show");
+        if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+      }
+    }
+
+ 
+
+
+  function filterSelectionEditJobCompany(c) {
+      var select = document.getElementById("editCompaniesJob");
+      var selectPenis = document.getElementById("penis");
+      var option = [];
+      var nigga = [];
+      var count = 0;
+  
+      var max = select.length - 1;
+    
+ 
+      for (var i=max; i >= 0 ; i--) {
+        selectPenis.remove(i);
+      }
+
+      for (var i=0; i < select.length; i++) {
+        nigga[i] = JSON.parse(select.options[i].value);
+      
+          if (nigga[i].companyID == c){
+            option[count] = document.createElement("option");
+            option[count].text = nigga[i].jobName;
+            option[count].value = JSON.stringify(nigga[i]);
+            selectPenis.add(option[count]); 
+
+         
+            count++;
+             
+          }
+        
+      }
+
+      changeFuncEditJob();
+  }
+
+   function filterSelectionEditJobCompanypanggilanTes(c) {
+      var select = document.getElementById("editCompaniesJobpanggilanTes");
+      var selectPenis = document.getElementById("penispanggilanTes");
+      var option = [];
+      var nigga = [];
+      var count = 0;
+  
+      var max = select.length - 1;
+    
+ 
+      for (var i=max; i >= 0 ; i--) {
+        selectPenis.remove(i);
+      }
+
+      for (var i=0; i < select.length; i++) {
+        nigga[i] = JSON.parse(select.options[i].value);
+      
+          if (nigga[i].companyID == c){
+            option[count] = document.createElement("option");
+            option[count].text = nigga[i].jobName;
+            option[count].value = JSON.stringify(nigga[i]);
+            selectPenis.add(option[count]); 
+
+         
+            count++;
+             
+          }
+        
+      }
+
+      changeFuncEditJobpanggilanTes();
+  }
+
+
+    function w3AddClass(element, name) {
+      var i, arr1, arr2;
+      arr1 = element.className.split(" ");
+      arr2 = name.split(" ");
+      for (i = 0; i < arr2.length; i++) {
+        if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
+      }
+    }
+
+    function w3RemoveClass(element, name) {
+      var i, arr1, arr2;
+      arr1 = element.className.split(" ");
+      arr2 = name.split(" ");
+      for (i = 0; i < arr2.length; i++) {
+        while (arr1.indexOf(arr2[i]) > -1) {
+          arr1.splice(arr1.indexOf(arr2[i]), 1);     
+        }
+      }
+      element.className = arr1.join(" ");
+    }
+
+    function alertJobID(txt){
+   
+      alert('var x' + txt);
+    }
+  </script>
+
+
+          <!--
+            <select id="delete" name="delete" onchange="deleteF(event, changeFunc())">
+              <option value="company" selected="selected">Company</option>
+              <option value="job">Job</option>
+            </select> -->
+
+           <!--        <div id="job" class="displaydel">
+              <p>FUCK NIGGA JOB</p>
+              <form action="/delete_job" method="post">
+             <select id="deleteJob" name="deleteJob">
+                {{#each data.arrJobs}}
+                  <option value='{"companyID":"{{companyID}}","companyName":"{{companyName}}","companyEmail":"{{companyEmail}}"}'> {{jobName}}</option>
+                {{/each}}
+            </select> <br> <br>
+               
+              <input type="submit" value="Delete">
+              </form>
+            </div> 
+            -->
+            
+</html>
